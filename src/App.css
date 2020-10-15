@@ -13,17 +13,6 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
 .App-link {
   color: #61dafb;
 }
@@ -36,3 +25,67 @@
     transform: rotate(360deg);
   }
 }
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.mx-6 {
+  margin-left: 6px;
+  margin-right: 6px;
+}
+
+.mr-4 {
+  margin-right: 4px;
+}
+
+.card-set {
+  background-color: #c8dfd7;
+  margin: 10px;
+  padding: 5px;
+}
+
+.card {
+  width: 50px;
+  height: 50px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none !important;
+  border: 0px solid;
+}
+
+.card:focus, .card:active {
+  outline: none !important;
+  border: 0px solid;
+}
+
+.card-closed {
+  background-color: white;
+}
+
+.card-green {
+  color: white;
+  background-color: green;
+}
+
+.card-red {
+  color: white;
+  background-color: red;
+}
+
+.card-hidden {
+  background-color: transparent;
+  border: 0px white;
+}
+
