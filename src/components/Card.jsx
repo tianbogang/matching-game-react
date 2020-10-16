@@ -16,13 +16,14 @@ const HiddenCard = () => (
     <div className="card card-hidden"></div>
 );
 
-const Card = ({status, point, onClickCarset}) => {
+const Card = ({card, onClickCarset}) => {
+    const status = card.status;
     if(status === 0) {
-        return <ClosedCard point={point} onClickCarset={onClickCarset} />;
+        return <ClosedCard point={card.point} onClickCarset={onClickCarset} />;
     } else if(status === 1) {
-        return <OpenGreenCard point={point} />
+        return <OpenGreenCard point={card.point} />
     } else if(status === 2) {
-        return <OpenRedCard point={point} />
+        return <OpenRedCard point={card.point} />
     } else {
         return <HiddenCard />
     }

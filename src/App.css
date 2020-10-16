@@ -45,6 +45,10 @@
   margin-right: 4px;
 }
 
+.mt-2 {
+  margin-top: 2px;
+}
+
 .card-set {
   background-color: #c8dfd7;
   margin: 10px;

@@ -2,6 +2,7 @@ import React, { useState, useEffect  } from 'react';
 import { useHistory } from "react-router-dom";
 
 import Card from './Card';
+import Emoji from './Emoji';
 
 const PlayGame = (props) => {
     let history = useHistory();
@@ -14,6 +15,8 @@ const PlayGame = (props) => {
         return getShuffledCards(level, 0);
     });
 
+    const [mood, setMood] = useState(0);
+
     useEffect(() => {
     });
 
@@ -25,21 +28,14 @@ const PlayGame = (props) => {
         return cards;
     }
 
-    function updateCardset(cardset, point, status) {
-        const newCards =  cardset.map(card => {
-            if(card.point === point) {
-                return ({ point: point, status: status });
-            }
-            return card;
-        });        
-    }
-
-    function updateCardSets()
+    function updateView(theMood)
     {
         const newCards1 = cardset1.map(card => card);
         setCardset1(newCards1);
         const newCards2 = cardset2.map(card => card);
         setCardset2(newCards2);
+
+        setMood(theMood);
     }
 
     function toggleStateInSameCardset(cardset, card) {
@@ -47,7 +43,7 @@ const PlayGame = (props) => {
         if (selectedCard !== undefined) {
           selectedCard.status = 0;
           card.status = 1;
-          updateCardSets();
+          updateView(0);
         }
     }
       
@@ -56,23 +52,23 @@ const PlayGame = (props) => {
         if (selectedCard !== undefined) {
           if(selectedCard.point === card.point) {
             card.status = 1;
-            updateCardSets();
+            updateView(1);
             setTimeout (() => {
               selectedCard.status = 3;
               card.status = 3;
-              updateCardSets();
+              updateView(0);
             }, 1000);
           } else {
             card.status = 2;
-            updateCardSets();
+            updateView(2);
             setTimeout (() => {
               card.status = 0;
-              updateCardSets();
+              updateView(0);
             }, 3000);
           }
         } else {
           card.status = 1;
-          updateCardSets();
+          updateView(0);
         }
     }      
 
@@ -108,15 +104,15 @@ const PlayGame = (props) => {
 
     return (
         <div className="container">
-            <div className="d-flex justify-content-around align-items-center">
-                <h3>W</h3>
+            <div className="d-flex justify-content-around align-items-center mt-2">
+                <Emoji mood={mood} />
                 <h3>Play Game</h3>
                 <h3>00:00:16</h3>
             </div>
 
             <div className="d-flex flex-wrap card-set">
                 {cardset1.map((card, index) => 
-                    <Card key={index} status={card.status} point={card.point} onClickCarset={onClickCardset1} />
+                    <Card key={index} card={card} onClickCarset={onClickCardset1} />
                 )}
             </div>
 
@@ -124,7 +120,7 @@ const PlayGame = (props) => {
 
             <div className="d-flex flex-wrap card-set">
                 {cardset2.map((card, index) => 
-                    <Card key={index} status={card.status} point={card.point} onClickCarset={onClickCardset2} />
+                    <Card key={index} card={card} onClickCarset={onClickCardset2} />
                 )}
             </div>
         </div>    
