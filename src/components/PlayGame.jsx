@@ -1,105 +1,50 @@
-import React, { useState, useEffect  } from 'react';
+import React, { useState, useReducer, useEffect  } from 'react';
 import { useHistory } from "react-router-dom";
 
 import Card from './Card';
 import Emoji from './Emoji';
 
+import gameReducer, { initGame, playTypes } from '../store/game';
+
 const PlayGame = (props) => {
     let history = useHistory();
 
     const level = props.match.params.difficulty;
-    const [cardset1, setCardset1] = useState(() => {
-        return getShuffledCards(level, 0);
-    });
-    const [cardset2, setCardset2] = useState(() => {
-        return getShuffledCards(level, 0);
-    });
+    const [game, dispatch] = useReducer(gameReducer, level, initGame);
+    const cardset1 = game.cardset1;
+    const cardset2 = game.cardset2;
 
     const [mood, setMood] = useState(0);
 
     useEffect(() => {
+        const interval = game.refresh;
+        if(interval !== 0) {
+            setTimeout (() => {
+                dispatch({ type: playTypes.refresh, payload: { } });
+                setMood(0);
+                checkAndStop();  
+            }, interval); 
+            (interval === 3000) ? setMood(2) : setMood(1);
+        }
+        else {
+            setMood(0);
+        }
     });
 
-    function getShuffledCards(count, status) {
-        const pts = Array.from({length: count}, (_, i) => i).sort(() => Math.random() - 0.5);
-        const cards = pts.map(p => {
-            return { point: p, status: status };
-        });
-        return cards;
-    }
-
-    function updateView(theMood)
-    {
-        const newCards1 = cardset1.map(card => card);
-        setCardset1(newCards1);
-        const newCards2 = cardset2.map(card => card);
-        setCardset2(newCards2);
-
-        setMood(theMood);
-    }
-
-    function toggleStateInSameCardset(cardset, card) {
-        const selectedCard = cardset.find(c => c.status === 1);
-        if (selectedCard !== undefined) {
-          selectedCard.status = 0;
-          card.status = 1;
-          updateView(0);
-        }
-    }
-      
-    function updateStateBetweenCardset(cardset, card) {
-        const selectedCard = cardset.find(c => c.status === 1);
-        if (selectedCard !== undefined) {
-          if(selectedCard.point === card.point) {
-            card.status = 1;
-            updateView(1);
-            setTimeout (() => {
-              selectedCard.status = 3;
-              card.status = 3;
-              updateView(0);
-            }, 1000);
-          } else {
-            card.status = 2;
-            updateView(2);
-            setTimeout (() => {
-              card.status = 0;
-              updateView(0);
-            }, 3000);
-          }
-        } else {
-          card.status = 1;
-          updateView(0);
-        }
-    }      
-
     function checkAndStop() {
-        setTimeout (() => {
-            if(
-                cardset1.filter(c => c.status !== 3).length === 0 && 
-                cardset2.filter(c => c.status !== 3).length === 0 
-            ) {
-                const duration = "00:00:36";
-                history.push(`/GameOver/${duration}`);
-            }
-        }, 1000);
+        const remainingCards = cardset1.filter(c => c.status !== 3).length + cardset2.filter(c => c.status !== 3).length;
+        if(remainingCards === 0) {
+            const duration = "00:00:36";
+            history.push(`/GameOver/${duration}`);
+        }
     }
 
     function onClickCardset1(point) {
-        const card = cardset1.find(c => c.point === point);
-        if(card !== undefined) {
-          toggleStateInSameCardset(cardset1, card);
-          updateStateBetweenCardset(cardset2, card);
-        }
-        checkAndStop();
+        dispatch({ type: playTypes.clickUno, payload: { point: point } });
     }
 
     function onClickCardset2(point) {
-        const card = cardset2.find(c => c.point === point);
-        if(card !== undefined) {
-          toggleStateInSameCardset(cardset2, card);
-          updateStateBetweenCardset(cardset1, card);
-        }
-        checkAndStop();
+        dispatch({ type: playTypes.clickDue, payload: { point: point } });
     }
 
     return (

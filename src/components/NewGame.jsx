@@ -13,7 +13,7 @@ const NewGame = () => {
     return (
         <div className="container">
             <div className="d-flex justify-content-center">
-                <img src={logo} alt="REACT" width="60" height="60" />
+                <img src={logo} alt="LOGO" width="60" height="60" />
                 <h1>Matching Game</h1>
             </div>
     

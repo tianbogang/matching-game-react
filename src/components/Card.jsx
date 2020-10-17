@@ -1,14 +1,14 @@
 import React from 'react';
 
-const ClosedCard = ({point, onClickCarset}) => (
+const ClosedCard = ({ point, onClickCarset }) => (
     <button className="btn card card-closed" onClick={() => onClickCarset(point)}></button>
 );
 
-const OpenGreenCard = ({point}) => (
+const OpenGreenCard = ({ point }) => (
     <div className="card card-green">{point}</div>
 );
 
-const OpenRedCard = ({point}) => (
+const OpenRedCard = ({ point }) => (
     <div className="card card-red">{point}</div>
 );
 
@@ -16,7 +16,7 @@ const HiddenCard = () => (
     <div className="card card-hidden"></div>
 );
 
-const Card = ({card, onClickCarset}) => {
+const Card = ({ card, onClickCarset }) => {
     const status = card.status;
     if(status === 0) {
         return <ClosedCard point={card.point} onClickCarset={onClickCarset} />;

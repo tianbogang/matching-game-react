@@ -6,7 +6,8 @@ const GameOver = (props) => {
 
     const duration = props.match.params.duration;
 
-    function playAgain() {
+    function playAgain(event) {
+        event.preventDefault();
         history.push("/NewGame");
     }
 
