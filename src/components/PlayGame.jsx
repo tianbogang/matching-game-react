@@ -24,14 +24,14 @@ const PlayGame = (props) => {
         timerRef.current.start();
     }, []);
 
-    function sleep(ms) {
-        return new Promise(res => setTimeout(res, ms));
-    }
-
     function checkAndStop() {
         const remainingCards = cardset1.filter(c => c.status !== 3).length + cardset2.filter(c => c.status !== 3).length;
         if(remainingCards === 0)
             setFinished(true);
+    }
+
+    function sleep(ms) {
+        return new Promise(res => setTimeout(res, ms));
     }
 
     useEffect(() => {
