@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, forwardRef, useImperativeHandle } from 'react';
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import moment from 'moment';
 
 const StopWatch = (props, ref) => {
@@ -16,16 +16,15 @@ const StopWatch = (props, ref) => {
         time.setSeconds(tickCount);
         return moment(time).format('HH:mm:ss');
     }
-    const duration = useMemo(() => { return timeSpan(tick) }, [tick]);
 
     useImperativeHandle(ref, () => ({
         start: () => setActive(true),
         stop: () => setActive(false),
-        timeUsed: () => { return duration }
+        timeUsed: () => { return timeSpan(tick) }
     })
     );
 
-    return ( <span font-scale="1.5">{duration}</span> );
+    return ( <span font-scale="1.5">{ timeSpan(tick) }</span> );
 };
 
 export default forwardRef(StopWatch);

@@ -1,4 +1,8 @@
 
+const CardState = {
+  Closed: 0, OpenGreen: 1, OpenRed: 2, Hidden: 3
+};
+
 const initGame = (level) => {
   function getShuffledCards(count, status) {
     const pts = Array.from({length: count}, (_, i) => i).sort(() => Math.random() - 0.5);
@@ -10,54 +14,54 @@ const initGame = (level) => {
 
   return { 
     difficulty: level, 
-    cardset1: getShuffledCards(level, 0),
-    cardset2: getShuffledCards(level, 0),
+    cardset1: getShuffledCards(level, CardState.Closed),
+    cardset2: getShuffledCards(level, CardState.Closed),
     refresh: 0
   };
 };
 
-const playTypes = {
+const PlayTypes = {
   clickUno: "clickUno",
   clickDue: "clickDue",
   refresh: "refresh"
 };
 
 function toggleStateInSameCardset(cardset, card) {
-  const selectedCard = cardset.find(c => c.status === 1);
+  const selectedCard = cardset.find(c => c.status === CardState.OpenGreen);
   if (selectedCard !== undefined) {
-    selectedCard.status = 0;
-    card.status = 1;
+    selectedCard.status = CardState.Closed;
+    card.status = CardState.OpenGreen;
   }
 }
 
 function updateStateBetweenCardset(cardset, card) {
-  const selectedCard = cardset.find(c => c.status === 1);
+  const selectedCard = cardset.find(c => c.status === CardState.OpenGreen);
   if (selectedCard !== undefined) {
     if(selectedCard.point === card.point) {
-      card.status = 1;
+      card.status = CardState.OpenGreen;
       const interval = 1000;
       setTimeout (() => {
-        selectedCard.status = 3;
-        card.status = 3;
+        selectedCard.status = CardState.Hidden;
+        card.status = CardState.Hidden;
       }, interval);
       return interval;
     } else {
-      card.status = 2;
+      card.status = CardState.OpenRed;
       const interval = 3000;
       setTimeout (() => {
-        card.status = 0;
+        card.status = CardState.Closed;
       }, interval);
       return interval;
     }
   } else {
-    card.status = 1;
+    card.status = CardState.OpenGreen;
     return 0;
   }
 }      
 
 const gameReducer = (state, action) => {
   switch (action.type) {
-    case playTypes.clickUno: {
+    case PlayTypes.clickUno: {
       let interval = 0;
       const cards1 = [...state.cardset1];
       const cards2 = [...state.cardset2];
@@ -69,7 +73,7 @@ const gameReducer = (state, action) => {
       return { ...state, cardset1: cards1, cardset2: cards2, refresh: interval };        
     }
 
-    case playTypes.clickDue: {
+    case PlayTypes.clickDue: {
       let interval = 0;
       const cards1 = [...state.cardset1];
       const cards2 = [...state.cardset2];
@@ -81,7 +85,7 @@ const gameReducer = (state, action) => {
       return { ...state, cardset1: cards1, cardset2: cards2, refresh: interval };        
     }
 
-    case playTypes.refresh: {
+    case PlayTypes.refresh: {
       return { ...state, refresh: 0 };        
     }
 
@@ -91,4 +95,4 @@ const gameReducer = (state, action) => {
 };
 
 export default gameReducer;
-export { initGame, playTypes };
+export { CardState, initGame, PlayTypes };

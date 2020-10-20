@@ -1,4 +1,5 @@
 import React from 'react';
+import { CardState } from '../store/game';
 
 const ClosedCard = ({ point, onClickCarset }) => (
     <button className="btn card card-closed" onClick={() => onClickCarset(point)}></button>
@@ -18,13 +19,13 @@ const HiddenCard = () => (
 
 const Card = ({ card, onClickCarset }) => {
     const status = card.status;
-    if(status === 0) {
+    if(status === CardState.Closed) {
         return <ClosedCard point={card.point} onClickCarset={onClickCarset} />;
-    } else if(status === 1) {
+    } else if(status === CardState.OpenGreen) {
         return <OpenGreenCard point={card.point} />
-    } else if(status === 2) {
+    } else if(status === CardState.OpenRed) {
         return <OpenRedCard point={card.point} />
-    } else {
+    } else {  // must be CardState.Hidden
         return <HiddenCard />
     }
 };

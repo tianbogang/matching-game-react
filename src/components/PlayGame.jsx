@@ -5,7 +5,7 @@ import Card from './Card';
 import Emoji from './Emoji';
 import StopWatch from './StopWatch';
 
-import gameReducer, { initGame, playTypes } from '../store/game';
+import gameReducer, { CardState, initGame, PlayTypes } from '../store/game';
 
 const PlayGame = (props) => {
     let history = useHistory();
@@ -25,7 +25,9 @@ const PlayGame = (props) => {
     }, []);
 
     function checkAndStop() {
-        const remainingCards = cardset1.filter(c => c.status !== 3).length + cardset2.filter(c => c.status !== 3).length;
+        const remainingCards = 
+            cardset1.filter(c => c.status !== CardState.Hidden).length + 
+            cardset2.filter(c => c.status !== CardState.Hidden).length;   
         if(remainingCards === 0)
             setFinished(true);
     }
@@ -39,7 +41,7 @@ const PlayGame = (props) => {
         if(interval !== 0) {
             (interval === 3000) ? setMood(2) : setMood(1);
             sleep(interval).then(() => {
-                dispatch({ type: playTypes.refresh, payload: { } });
+                dispatch({ type: PlayTypes.refresh, payload: { } });
                 setMood(0);
                 checkAndStop();  
             });
@@ -56,11 +58,11 @@ const PlayGame = (props) => {
     });
 
     function onClickCardset1(point) {
-        dispatch({ type: playTypes.clickUno, payload: { point: point } });
+        dispatch({ type: PlayTypes.clickUno, payload: { point: point } });
     }
 
     function onClickCardset2(point) {
-        dispatch({ type: playTypes.clickDue, payload: { point: point } });
+        dispatch({ type: PlayTypes.clickDue, payload: { point: point } });
     }
 
     return (
