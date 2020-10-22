@@ -26,25 +26,6 @@
   }
 }
 
-@keyframes spin-to-open0 {
-  from {
-    transform: rotateY(180deg);
-  }
-  to {
-    transform: rotateY(0deg);
-  }
-}
-
-@keyframes spin-to-hidden0 {
-  from {
-    background-color: green;
-  }
-  to {
-    background-color: transparent;
-    border: 0px white;
-  }
-}
-
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
