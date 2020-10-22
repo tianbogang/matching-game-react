@@ -27,8 +27,9 @@ const Card = ({ card, onClickCarset }) => {
         return <OpenGreenCard point={card.point} />
     } else if(status === CardState.OpenRed) {
         return <OpenRedCard point={card.point} />
-    } else {  // must be CardState.Hidden
-        return <HiddenCard />
+    } else {
+        // must be CardState.Hidden
+        return <HiddenCard />  
     }
 };
 
