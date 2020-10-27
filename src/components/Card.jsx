@@ -4,7 +4,7 @@ import { CardState } from '../store/game';
 import './Card.css';
 
 const ClosedCard = ({ point, onClickCarset }) => (
-    <button className="card card-closed" onClick={() => onClickCarset(point)}></button>
+    <div className="card card-closed" onClick={() => onClickCarset(point)}></div>
 );
 
 const OpenGreenCard = ({ point }) => (
